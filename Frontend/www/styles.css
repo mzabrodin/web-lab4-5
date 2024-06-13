@@ -146,8 +146,21 @@ body > main > header > div.icon > img {
     border-radius: 5px;
 }
 
+main button:hover{
+    text-decoration: underline;
+}
+
+.order button:hover{
+    background-color: var(--header-color);
+}
+
+.make-order:hover{
+    text-decoration: underline;
+}
+
 .lower-info{
     display: flex;
+    justify-content: space-between;
     align-items: center;
     height: 50%;
     color: #FFFFFF;

@@ -17,86 +17,18 @@ function addItemToOrder(button) {
     fetch("./scripts/data.json")
         .then((response) => response.json())
         .then((data) => {
-            for (let pizza of data) {
-                if (pizza.title !== pizzaName) {
-                    continue;
-                }
-                var sizeLabel;
-                if (size === "big") {
-                    sizeLabel = "(Велика)";
-                } else {
-                    sizeLabel = "(Мала)";
-                }
+            let pizza = data.find(p => p.title === pizzaName);
+            if (!pizza) return;
 
-                // Check if item already exists in order
-                let existingItem = null;
-                const orderItems = order.getElementsByClassName("order-list-item");
-                for (let i = 0; i < orderItems.length; i++) {
-                    if (isSameItem(orderItems[i], pizza.title + " " + sizeLabel)) {
-                        existingItem = orderItems[i];
-                        break;
-                    }
-                }
+            let sizeLabel = size === "big" ? "(Велика)" : "(Мала)";
 
-                if (existingItem) {
-                    // Increment quantity
-                    const amountElement = existingItem.querySelector(".order-counter");
-                    const currentAmount = parseInt(amountElement.textContent);
-                    amountElement.textContent = currentAmount + 1;
+            let orderData = JSON.parse(localStorage.getItem("orderData")) || {};
+            let pizzaKey = `${pizza.title} ${sizeLabel}`;
 
-                    // Update local storage
-                    const pizzaObjectJSON = localStorage.getItem(pizza.title + " " + sizeLabel);
-                    const pizzaObject = JSON.parse(pizzaObjectJSON);
-                    pizzaObject.amount += 1;
-                    localStorage.setItem(pizza.title + " " + sizeLabel, JSON.stringify(pizzaObject));
-
-                    // Update total amount and price
-                    const currentAmountCart = parseInt(document.querySelector("#amount-cart").innerHTML);
-                    document.querySelector("#amount-cart").innerHTML = currentAmountCart + 1;
-
-                    const currentPrice = parseInt(document.querySelector(".sum").innerHTML.split(" ")[0]);
-                    document.querySelector(".sum").innerHTML = (currentPrice + pizzaObject.price) + " грн";
-
-                    const finalPrice = existingItem.querySelector(".order-list-price");
-                    finalPrice.textContent = pizzaObject.price * pizzaObject.amount + " грн";
-
-                    return; // Exit fetch loop
-                }
-
-                // If item does not exist, create new itemElement and add to order
-                let itemElement = document.createElement("div");
-                itemElement.classList.add("order-list-item");
-
-                itemElement.innerHTML = `
-                    <div class="order-list-text">
-                        <span class="ordered-pizza-name">${pizza.title} ${sizeLabel}</span>
-                        <div class="features">
-                            <div class="svg-container">
-                                <img src="assets/images/size-icon.svg" alt="size-icon" />
-                                <span>${pizza[size + "_size"].size}</span>
-                            </div>
-                            <div class="svg-container">
-                                <img src="assets/images/weight.svg" alt="size-icon" />
-                                <span>${pizza[size + "_size"].weight}</span>
-                            </div>
-                        </div>
-                        <div class="price-config">
-                            <div class="order-list-price">${pizza[size + "_size"].price} грн</div>
-                            <div class="amount-config">
-                                <button class="round-button delete" onclick="minusItem(this)">-</button>
-                                <span class="order-counter">1</span>
-                                <button class="round-button add" onclick="plusItem(this)">+</button>
-                                <button class="round-button remove" onclick="removeItem(this)">x</button>
-                            </div>
-                        </div>
-                    </div>
-                    <img src="${pizza.icon}" alt="small order pizza" class="ordered-pizza-img" />
-                `;
-
-                order.appendChild(itemElement);
-
-                // Update local storage with new item
-                let pizzaObject = {
+            if (orderData[pizzaKey]) {
+                orderData[pizzaKey].amount += 1;
+            } else {
+                orderData[pizzaKey] = {
                     title: pizza.title,
                     sizeLabel: sizeLabel,
                     size: pizza[size + "_size"].size,
@@ -105,17 +37,10 @@ function addItemToOrder(button) {
                     icon: pizza.icon,
                     amount: 1,
                 };
-
-                let pizzaTitle = pizza.title + " " + sizeLabel;
-                localStorage.setItem(pizzaTitle, JSON.stringify(pizzaObject));
-
-                // Update total amount and price
-                const currentAmountCart = parseInt(document.querySelector("#amount-cart").innerHTML);
-                document.querySelector("#amount-cart").innerHTML = currentAmountCart + 1;
-
-                const currentPrice = parseInt(document.querySelector(".sum").innerHTML.split(" ")[0]);
-                document.querySelector(".sum").innerHTML = (currentPrice + pizzaObject.price) + " грн";
             }
+
+            localStorage.setItem("orderData", JSON.stringify(orderData));
+            updateOrderDisplay();
         })
         .catch((error) => {
             console.error("Error in orderlist:", error);
@@ -127,20 +52,70 @@ function isSameItem(item, pizzaName) {
     return orderedPizzaName === pizzaName;
 }
 
-
-
 window.addEventListener("load", function () {
-    var generalAmount = 0;
-    var generalPrice = 0;
+    updateOrderDisplay();
+});
 
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        const pizzaObjectJSON = localStorage.getItem(key);
+function plusItem(button) {
+    const listItem = button.closest(".order-list-item");
+    const pizzaName = listItem.querySelector(".ordered-pizza-name").innerText;
+
+    let orderData = JSON.parse(localStorage.getItem("orderData")) || {};
+    if (!orderData[pizzaName]) return;
+
+    orderData[pizzaName].amount += 1;
+    localStorage.setItem("orderData", JSON.stringify(orderData));
+    updateOrderDisplay();
+}
+
+function minusItem(button) {
+    const listItem = button.closest(".order-list-item");
+    const pizzaName = listItem.querySelector(".ordered-pizza-name").innerText;
+
+    let orderData = JSON.parse(localStorage.getItem("orderData")) || {};
+    if (!orderData[pizzaName]) return;
+
+    if (orderData[pizzaName].amount > 1) {
+        orderData[pizzaName].amount -= 1;
+    } else {
+        delete orderData[pizzaName];
+    }
+
+    localStorage.setItem("orderData", JSON.stringify(orderData));
+    updateOrderDisplay();
+}
+
+function removeItem(button) {
+    const listItem = button.closest(".order-list-item");
+    const pizzaName = listItem.querySelector(".ordered-pizza-name").innerText;
+
+    let orderData = JSON.parse(localStorage.getItem("orderData")) || {};
+    if (orderData[pizzaName]) {
+        delete orderData[pizzaName];
+    }
+
+    localStorage.setItem("orderData", JSON.stringify(orderData));
+    updateOrderDisplay();
+}
+
+function removeAllItems() {
+    localStorage.removeItem("orderData");
+    updateOrderDisplay();
+}
+
+function updateOrderDisplay() {
+    const order = document.querySelector(".order");
+    order.innerHTML = "";
+
+    let orderData = JSON.parse(localStorage.getItem("orderData")) || {};
+    let generalAmount = 0;
+    let generalPrice = 0;
+
+    for (let key in orderData) {
+        const pizzaObject = orderData[key];
 
         let itemElement = document.createElement("div");
         itemElement.classList.add("order-list-item");
-
-        const pizzaObject = JSON.parse(pizzaObjectJSON);
 
         itemElement.innerHTML = `
           <div class="order-list-text">
@@ -172,116 +147,12 @@ window.addEventListener("load", function () {
           />
         `;
 
-        const order = document.querySelector(".order");
         order.appendChild(itemElement);
 
         generalAmount += pizzaObject.amount;
         generalPrice += pizzaObject.amount * pizzaObject.price;
     }
+
     document.querySelector("#amount-cart").innerHTML = generalAmount;
     document.querySelector(".sum").innerHTML = generalPrice + " грн";
-
-    console.log(generalAmount);
-    console.log(generalPrice);
-});
-
-
-function plusItem(button) {
-    const listItem = button.closest(".order-list-item");
-    const pizzaName = listItem.querySelector(".ordered-pizza-name").innerText;
-
-    const pizzaObjectJSON = localStorage.getItem(pizzaName);
-    const pizzaObject = JSON.parse(pizzaObjectJSON);
-
-    pizzaObject.amount += 1;
-
-    const currentAmount = parseInt(
-        document.querySelector("#amount-cart").innerHTML
-    );
-    document.querySelector("#amount-cart").innerHTML = currentAmount + 1;
-
-    const currentPrice = parseInt(
-        document.querySelector(".sum").innerHTML.split(" ")[0]
-    );
-    document.querySelector(".sum").innerHTML =
-        parseInt(currentPrice + pizzaObject.price) + " грн";
-
-    const amountElement = listItem.querySelector(".order-counter");
-    amountElement.textContent = pizzaObject.amount;
-
-    const finalPrice = listItem.querySelector(".order-list-price");
-    finalPrice.textContent = pizzaObject.price * pizzaObject.amount + " грн";
-
-    localStorage.setItem(pizzaName, JSON.stringify(pizzaObject));
-
-    console.log("Updated pizza amount:", pizzaObject.amount);
 }
-
-function minusItem(button) {
-    const listItem = button.closest(".order-list-item");
-    const pizzaName = listItem.querySelector(".ordered-pizza-name").innerText;
-
-    const pizzaObjectJSON = localStorage.getItem(pizzaName);
-    const pizzaObject = JSON.parse(pizzaObjectJSON);
-
-    if (pizzaObject.amount > 1) {
-        pizzaObject.amount -= 1;
-
-        const currentAmount = parseInt(
-            document.querySelector("#amount-cart").innerHTML
-        );
-        document.querySelector("#amount-cart").innerHTML = currentAmount - 1;
-
-        const currentPrice = parseInt(
-            document.querySelector(".sum").innerHTML.split(" ")[0]
-        );
-        document.querySelector(".sum").innerHTML =
-            parseInt(currentPrice - pizzaObject.price) + " грн";
-
-        const amountElement = listItem.querySelector(".order-counter");
-        amountElement.textContent = pizzaObject.amount;
-
-        const finalPrice = listItem.querySelector(".order-list-price");
-        finalPrice.textContent = pizzaObject.price * pizzaObject.amount + " грн";
-
-        localStorage.setItem(pizzaName, JSON.stringify(pizzaObject));
-
-        console.log("Updated pizza amount:", pizzaObject.amount);
-    } else if (pizzaObject.amount === 1) {
-        removeItem(button);
-    }
-}
-
-function removeItem(button) {
-    const listItem = button.closest(".order-list-item");
-    const pizzaName = listItem.querySelector(".ordered-pizza-name").innerText;
-
-    const pizzaObjectJSON = localStorage.getItem(pizzaName);
-    const pizzaObject = JSON.parse(pizzaObjectJSON);
-
-    const currentAmount = parseInt(
-        document.querySelector("#amount-cart").innerHTML
-    );
-    document.querySelector("#amount-cart").innerHTML =
-        currentAmount - pizzaObject.amount;
-
-    const currentPrice = parseInt(
-        document.querySelector(".sum").innerHTML.split(" ")[0]
-    );
-    document.querySelector(".sum").innerHTML = parseInt(
-        currentPrice - pizzaObject.amount * pizzaObject.price
-    );
-    localStorage.removeItem(pizzaName);
-    listItem.remove();
-
-}
-
-function removeAllItems() {
-    const orderList = document.querySelector(".order");
-    const orderItems = orderList.getElementsByClassName("order-list-item");
-
-    while (orderItems.length > 0) {
-        removeItem(orderItems[0].querySelector(".remove"));
-    }
-}
-

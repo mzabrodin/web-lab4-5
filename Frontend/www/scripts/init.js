@@ -93,3 +93,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return badge;
     }
 });
+
+function redirectToChart() {
+    const orderData = localStorage.getItem("orderData");
+    const encodedData = encodeURIComponent(orderData);
+    window.location.href = `chart.html?data=${encodedData}`;
+}
