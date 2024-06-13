@@ -29,21 +29,21 @@
     </header>
     <div class="filters">
         <span>
-                <span class="filter-name">Усі піци</span>
+                <span class="filter-name">Усі</span>
                 <span class="pizza-amount" id="amount-main">8</span>
         </span>
         <div class="filters-buttons">
-            <button class="all"  onclick="filterPizza(event)">Усі</button>
-            <button class="meat" onclick="filterPizza(event)">М'ясні</button>
-            <button class="pineapple"s onclick="filterPizza(event)">З ананасами</button>
-            <button class="mushrooms" onclick="filterPizza(event)">З грибами</button>
-            <button class="seafood" onclick="filterPizza(event)">З морепродуктами</button>
-            <button class="vegan" onclick="filterPizza(event)">Веганські</button>
+            <button class="all" content="all">Усі</button>
+            <button class="meat" content="meat">М'ясні</button>
+            <button class="pineapple" content="pineapple">З ананасами</button>
+            <button class="mushrooms" content="mushroom">З грибами</button>
+            <button class="seafood" content="ocean">З морепродуктами</button>
+            <button class="vegan" content="vegan">Веганські</button>
         </div>
+        
     </div>
     <div class="menu">
         <!-- Here will be the list of pizzas -->
-         
     </div>
     <footer>
         <span>Pizza.24 - практичний проект в межах курсу з основ веб-технологій в межах Києво-Могилянської академії</span>
@@ -51,16 +51,16 @@
     </footer>
 
     <div class="badge">
-            <img src="assets/images/discount.svg" class="badge-img">
-            <div class="badge-text">
-                <span>ЦЬОГО</span><br>
-                <span>ТИЖНЯ</span><br>
-                <span>НА ВСЕ</span>
-                <div class="discount"></div>
-                <span>-20%</span>
-            </div>
+        <img src="assets/images/discount.svg" class="badge-img" alt="img">
+        <div class="badge-text">
+            <span>ЦЬОГО</span><br>
+            <span>ТИЖНЯ</span><br>
+            <span>НА ВСЕ</span>
+            <div class="discount"></div>
+            <span>-20%</span>
         </div>
-    
+    </div>
+
 </main>
 
 <aside class="cart">
@@ -68,7 +68,7 @@
         <span>Замовлення
             <span class="pizza-amount" id="amount-cart">0</span>
         </span>
-        <button class="clear-order" onclick="clearOrder(event)">Очистити замовлення</button>
+        <button class="clear-order" onclick="removeAllItems()">Очистити замовлення</button>
     </div>
     <div class="order">
         <!-- Here will be the list of ordered pizzas -->
@@ -82,8 +82,9 @@
     </div>
 </aside>
 
-
-
-<script src="../src/Pizza_List.js"></script>
+<script src="scripts/init.js"></script>
+<script src="scripts/order_scripts.js"></script>
+<script src="scripts/filter.js"></script>
+<script src="scripts/header.js"></script>
 </body>
 </html>
