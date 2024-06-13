@@ -57,6 +57,9 @@ function addItemToOrder(button) {
                     const currentPrice = parseInt(document.querySelector(".sum").innerHTML.split(" ")[0]);
                     document.querySelector(".sum").innerHTML = currentPrice + pizzaObject.price + " грн";
 
+                    const finalPrice = document.querySelector(".order-list-price");
+                    finalPrice.textContent = pizzaObject.price * pizzaObject.amount + " грн";
+
                     return; // Exit fetch loop
                 }
 
@@ -117,17 +120,6 @@ function addItemToOrder(button) {
         .catch((error) => {
             console.error("Error in orderlist:", error);
         });
-}
-
-function isItemAlreadyInOrderList(itemElement) {
-    const orderList = document.querySelector(".order");
-    const orderItems = orderList.getElementsByClassName("order-list-item");
-    for (let i = 0; i < orderItems.length; i++) {
-        if (isSameItem(itemElement, orderItems[i])) {
-            return true;
-        }
-    }
-    return false;
 }
 
 function isSameItem(item, pizzaName) {
