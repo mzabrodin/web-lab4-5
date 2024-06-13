@@ -55,9 +55,9 @@ function addItemToOrder(button) {
                     document.querySelector("#amount-cart").innerHTML = currentAmountCart + 1;
 
                     const currentPrice = parseInt(document.querySelector(".sum").innerHTML.split(" ")[0]);
-                    document.querySelector(".sum").innerHTML = currentPrice + pizzaObject.price + " грн";
+                    document.querySelector(".sum").innerHTML = (currentPrice + pizzaObject.price) + " грн";
 
-                    const finalPrice = document.querySelector(".order-list-price");
+                    const finalPrice = existingItem.querySelector(".order-list-price");
                     finalPrice.textContent = pizzaObject.price * pizzaObject.amount + " грн";
 
                     return; // Exit fetch loop
@@ -114,7 +114,7 @@ function addItemToOrder(button) {
                 document.querySelector("#amount-cart").innerHTML = currentAmountCart + 1;
 
                 const currentPrice = parseInt(document.querySelector(".sum").innerHTML.split(" ")[0]);
-                document.querySelector(".sum").innerHTML = currentPrice + pizzaObject.price + " грн";
+                document.querySelector(".sum").innerHTML = (currentPrice + pizzaObject.price) + " грн";
             }
         })
         .catch((error) => {
@@ -126,6 +126,7 @@ function isSameItem(item, pizzaName) {
     const orderedPizzaName = item.querySelector(".ordered-pizza-name").textContent;
     return orderedPizzaName === pizzaName;
 }
+
 
 
 window.addEventListener("load", function () {
@@ -155,7 +156,7 @@ window.addEventListener("load", function () {
               </div>
             </div>
             <div class="price-config">
-              <div class="order-list-price">${pizzaObject.price} грн</div>
+              <div class="order-list-price">${pizzaObject.price * pizzaObject.amount} грн</div>
               <div class="amount-config">
                 <button class="round-button delete" onclick="minusItem(this)">-</button>
                 <span class="order-counter">${pizzaObject.amount}</span>
@@ -183,6 +184,7 @@ window.addEventListener("load", function () {
     console.log(generalAmount);
     console.log(generalPrice);
 });
+
 
 function plusItem(button) {
     const listItem = button.closest(".order-list-item");
@@ -282,3 +284,4 @@ function removeAllItems() {
         removeItem(orderItems[0].querySelector(".remove"));
     }
 }
+
