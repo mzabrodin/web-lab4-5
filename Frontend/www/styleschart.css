@@ -150,4 +150,5 @@ main button:hover{
     height: 100vh;
     width: 100%;
     background-color: var(--background-color);
+    border-bottom: 3px solid var(--header-text-color);
 }
