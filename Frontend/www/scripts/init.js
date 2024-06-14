@@ -17,17 +17,16 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Failed to load pizza data. Please try again later.");
         });
 
-    function renderPizzas(pizzas) {
-        menu.innerHTML = "";
-        pizzas.forEach((pizza) => {
-            const card = document.createElement("div");
-            card.className = "pizza-panel";
-
-            let content = Object.values(pizza.content).flat().join(", ");
-            content = content.charAt(0).toUpperCase() + content.slice(1);
-
-            card.innerHTML = `
-                <div class="pizza-card">
+        function renderPizzas(pizzas) {
+            menu.innerHTML = "";
+            pizzas.forEach((pizza) => {
+                const card = document.createElement("div");
+                card.className = "pizza-card";
+    
+                let content = Object.values(pizza.content).flat().join(", ");
+                content = content.charAt(0).toUpperCase() + content.slice(1);
+    
+                card.innerHTML = `
                     <img src="${pizza.icon}" alt="${pizza.title}" />
                     <div class="caption">
                         <h3>${pizza.title}</h3>
@@ -35,34 +34,31 @@ document.addEventListener("DOMContentLoaded", function () {
                         <p>${content}</p>
                     </div>
                     <div class="order-buttons"></div>
-                </div>
-            `;
+                `;
+    
+                const orderButtonsContainer = card.querySelector(".order-buttons");
+    
+                if (pizza.small_size) {
+                    const smallSize = createOrderButton(pizza, pizza.small_size, "small_pizza");
+                    orderButtonsContainer.appendChild(smallSize);
+                }
+    
+                if (pizza.big_size) {
+                    const bigSize = createOrderButton(pizza, pizza.big_size, "big_pizza");
+                    orderButtonsContainer.appendChild(bigSize);
+                }
 
-            const orderButtonsContainer = card.querySelector(".order-buttons");
-
-            if (pizza.small_size) {
-                const smallSize = createOrderButton(pizza, pizza.small_size, "small_pizza");
-                orderButtonsContainer.appendChild(smallSize);
-            }
-
-            if (pizza.big_size) {
-                const bigSize = createOrderButton(pizza, pizza.big_size, "big_pizza");
-                orderButtonsContainer.appendChild(bigSize);
-            }
-
-            if (pizza.is_popular) {
-                const popularBadge = createBadge("Популярна", "popular");
-                card.querySelector(".pizza-card").appendChild(popularBadge);
-            }
-
-            if (pizza.is_new) {
-                const newBadge = createBadge("Нова", "new");
-                card.querySelector(".pizza-card").appendChild(newBadge);
-            }
-
-            menu.appendChild(card);
-        });
-    }
+                if (pizza.is_new) {
+                    const newBadge = createBadge("Нова", "new");
+                    card.appendChild(newBadge);
+                } else if (pizza.is_popular) {
+                    const popularBadge = createBadge("Популярна", "popular");
+                    card.appendChild(popularBadge);
+                }
+    
+                menu.appendChild(card);
+            });
+        }
 
     function createOrderButton(pizza, size, className) {
         const button = document.createElement("div");

@@ -1,11 +1,10 @@
 function addItemToOrder(button) {
     const buyButton = button.closest(".buy_button");
     const size_property = Array.from(buyButton.classList)[1];
-    const order = document.querySelector(".order");
 
-    var size;
+    let size;
 
-    if (size_property == "big_pizza") {
+    if (size_property === "big_pizza") {
         size = "big";
     } else {
         size = "small";
@@ -45,11 +44,6 @@ function addItemToOrder(button) {
         .catch((error) => {
             console.error("Error in orderlist:", error);
         });
-}
-
-function isSameItem(item, pizzaName) {
-    const orderedPizzaName = item.querySelector(".ordered-pizza-name").textContent;
-    return orderedPizzaName === pizzaName;
 }
 
 window.addEventListener("load", function () {
@@ -153,6 +147,6 @@ function updateOrderDisplay() {
         generalPrice += pizzaObject.amount * pizzaObject.price;
     }
 
-    document.querySelector("#amount-cart").innerHTML = generalAmount;
+    document.querySelector("#amount-cart").innerHTML = generalAmount.toString();
     document.querySelector(".sum").innerHTML = generalPrice + " грн";
 }

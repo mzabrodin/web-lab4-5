@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Automatically trigger the "all" filter on page load
     const defaultButton = document.querySelector(".filters-buttons button[content='all']");
     if (defaultButton) {
         defaultButton.click();
@@ -20,23 +19,21 @@ function changeFilter(element) {
     pizzaCardAmount = 0;
     const content = element.getAttribute("content");
 
-    // Remove chosen attribute from all buttons and add it to the clicked button
     const filterProperties = document.querySelectorAll(".filters-buttons button");
     filterProperties.forEach((prop) => {
         if (prop) prop.removeAttribute("chosen");
     });
     element.setAttribute("chosen", "chosen");
 
-    // Change the filter name displayed
     const filterNameElement = document.querySelector(".filter-name");
     filterNameElement.textContent = element.textContent;
 
     fetch("./scripts/data.json")
         .then((response) => response.json())
         .then((data) => {
-            const pizzaPanels = document.querySelectorAll(".pizza-panel");
+            const pizzaCards = document.querySelectorAll(".pizza-card");
 
-            pizzaPanels.forEach((pizzaCard) => {
+            pizzaCards.forEach((pizzaCard) => {
                 pizzaCard.style.display = "none";
                 const pizzaTitle = pizzaCard.querySelector(".caption > h3").textContent;
 

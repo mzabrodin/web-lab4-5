@@ -381,18 +381,6 @@ footer{
     }
 }
 
-.pizza-panel {
-    width: 300px;
-    margin: 20px;
-    border: 1px solid var(--pizza-cart-color);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 0;
-    background-color: var(--pizza-cart-color);
-}
-
 .pizza-card {
     background-color: var(--pizza-cart-color);
     display: flex;
@@ -400,7 +388,12 @@ footer{
     align-items: center;
     padding: 20px;
     position: relative;
-    z-index: 1;
+    width: 300px;
+    margin: 20px;
+    border: 1px solid var(--pizza-cart-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .pizza-card img {
@@ -501,8 +494,8 @@ footer{
 
 .pizza-badge {
     position: absolute; 
-    top: 4px;
-    left: 180px;
+    top: 5px;
+    left: 220px;
     background-color: #59B958;
     border-radius: 5px;
     padding: 5px 8px;
