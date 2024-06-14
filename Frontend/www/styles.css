@@ -324,8 +324,12 @@ footer{
 .order {
     height: 75%;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
     background-color: #f5f5f5;
+}
+
+.order::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .cart-footer{
