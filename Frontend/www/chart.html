@@ -8,29 +8,33 @@
     <title>Pizza Chart</title>
 </head>
 <body>
-    <main>
-        <header>
-            <div class="icon">
-                <span id="icon-pizza">PIZZA</span>
-                <span id="icon-kma">KMA</span>
-                <img src="assets/images/discount.svg" alt="icon-img">
-            </div>
-            <div class="info">
-                <div class="upper-info">
-                    <div class="info-text">
-                        <span class="phone">(044) 222 5 222</span>
-                        <span class="schedule">24 години 7 днів на тиждень</span>
-                        <span class="delivery">Безкоштовна доставка піци</span>
-                    </div>
-                </div>
-                <div class="lower-info">
-                    <span class="pizza">Піца</span>
-                    <button type="button" class="chart-button" onclick="redirectToChart()">Назад</button>
+<main>
+    <header>
+        <div class="icon">
+            <span id="icon-pizza">PIZZA</span>
+            <span id="icon-kma">KMA</span>
+            <img src="assets/images/discount.svg" alt="icon-img">
+        </div>
+        <div class="info">
+            <div class="upper-info">
+                <div class="info-text">
+                    <span class="phone">(044) 222 5 222</span>
+                    <span class="schedule">24 години 7 днів на тиждень</span>
+                    <span class="delivery">Безкоштовна доставка піци</span>
                 </div>
             </div>
-        </header>
-        <div class="chart" id="chart_div" ></div>
-    </main>
-    <script src="scripts/chart.js"></script>
+            <div class="lower-info">
+                <span class="pizza">Піца</span>
+                <button type="button" class="chart-button" onclick="redirectToChart()">Назад</button>
+            </div>
+        </div>
+    </header>
+    <div class="charts">
+        <div class="chart-general" id="chart_div1"></div>
+        <div class="chart-type" id="chart_div2"></div>
+        <div class="chart-size" id="chart_div3"></div>
+    </div>
+</main>
+<script src="scripts/chart.js"></script>
 </body>
 </html>

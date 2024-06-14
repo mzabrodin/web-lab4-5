@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const filterButtons = document.querySelectorAll(".filters-buttons button");
 
     filterButtons.forEach(button => {
-        button.addEventListener("click", function(event) {
+        button.addEventListener("click", function (event) {
             changeFilter(event.target);
         });
     });
@@ -37,9 +37,8 @@ function changeFilter(element) {
                 pizzaCard.style.display = "none";
                 const pizzaTitle = pizzaCard.querySelector(".caption > h3").textContent;
 
-                // Find the corresponding pizza data
                 const pizza = data.find(p => p.title === pizzaTitle);
-                
+
                 if (pizza) {
                     const contentList = Object.keys(pizza["content"]);
 

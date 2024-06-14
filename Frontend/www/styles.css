@@ -60,7 +60,7 @@ header {
     height: 100px;
     background-color: var(--header-color);
     color: var(--header-text-color);
-    z-index: 11;
+    z-index: 2;
     min-width: 400px;
     width: calc(100% - 350px);
     transition: background-color 0.3s ease;
@@ -381,6 +381,19 @@ footer{
     }
 }
 
+.pizza-badge {
+    position: absolute;
+    top: -15px;
+    left: 235px;
+    background-color: #59B958;
+    border-radius: 5px;
+    padding: 5px 8px;
+    color: white;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+}
+
 .pizza-card {
     background-color: var(--pizza-cart-color);
     display: flex;
@@ -392,7 +405,6 @@ footer{
     margin: 20px;
     border: 1px solid var(--pizza-cart-color);
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -490,20 +502,6 @@ footer{
     justify-content: center;
     gap: 20px;
     width: 100%;
-}
-
-.pizza-badge {
-    position: absolute; 
-    top: 5px;
-    left: 220px;
-    background-color: #59B958;
-    border-radius: 5px;
-    padding: 5px 8px;
-    color: white;
-    width: 100px;
-    text-align: center;
-    z-index: 10;
-    font-weight: bold;
 }
 
 .pizza-badge[badge="new"] {
