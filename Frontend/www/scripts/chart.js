@@ -13,15 +13,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawGeneralChart() {
-        const data = new google.visualization.DataTable();
-        data.addColumn('string', 'Pizza');
-        data.addColumn('number', 'Amount');
-        data.addColumn({type: 'string', role: 'tooltip'});
+        const generalChart = new google.visualization.DataTable();
+        generalChart.addColumn('string', 'Pizza');
+        generalChart.addColumn('number', 'Amount');
+        generalChart.addColumn({type: 'string', role: 'tooltip'});
 
         for (let key in orderData) {
             let pizza = orderData[key];
             let tooltip = `${pizza.title} ${pizza.sizeLabel} \n Amount: ${pizza.amount}\nTotal Price: ${pizza.amount * pizza.price} грн`;
-            data.addRow([pizza.title + ' ' + pizza.sizeLabel, pizza.amount, tooltip]);
+            generalChart.addRow([pizza.title + ' ' + pizza.sizeLabel, pizza.amount, tooltip]);
         }
 
         const options = {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const chart = new google.visualization.PieChart(document.getElementsByClassName('chart-general')[0]);
-        chart.draw(data, options);
+        chart.draw(generalChart, options);
     }
 
     function drawTypeChart() {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let pizza = orderData[key];
             if (typeData[pizza.title]) {
                 typeData[pizza.title].amount += pizza.amount;
-                typeData[pizza.title].totalPrice += pizza.amount * pizza.price;
+                typeData[pizza.title].totalPrice += pizza.price;
             } else {
                 typeData[pizza.title] = {
                     amount: pizza.amount,
@@ -49,15 +49,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        const data = new google.visualization.DataTable();
-        data.addColumn('string', 'Pizza');
-        data.addColumn('number', 'Amount');
-        data.addColumn({type: 'string', role: 'tooltip'});
+        const typeChart = new google.visualization.DataTable();
+        typeChart.addColumn('string', 'Pizza');
+        typeChart.addColumn('number', 'Amount');
+        typeChart.addColumn({type: 'string', role: 'tooltip'});
 
         for (let title in typeData) {
             let pizzaData = typeData[title];
             let tooltip = `${title} \n Amount: ${pizzaData.amount}\nTotal Price: ${pizzaData.totalPrice} грн`;
-            data.addRow([title, pizzaData.amount, tooltip]);
+            typeChart.addRow([title, pizzaData.amount, tooltip]);
         }
 
         const options = {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const chart = new google.visualization.PieChart(document.getElementsByClassName('chart-type')[0]);
-        chart.draw(data, options);
+        chart.draw(typeChart, options);
     }
 
     function drawSizeChart() {
@@ -77,10 +77,10 @@ document.addEventListener('DOMContentLoaded', function () {
             let pizza = orderData[key];
             if (sizeData[pizza.sizeLabel]) {
                 sizeData[pizza.sizeLabel] += pizza.amount;
-                sizeTooltipData[pizza.sizeLabel] += pizza.amount * pizza.price;
+                sizeTooltipData[pizza.sizeLabel] += pizza.price;
             } else {
                 sizeData[pizza.sizeLabel] = pizza.amount;
-                sizeTooltipData[pizza.sizeLabel] = pizza.amount * pizza.price;
+                sizeTooltipData[pizza.sizeLabel] = pizza.price;
             }
         }
 
@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const options = {
             title: 'Size',
             is3D: true,
-            tooltip: { isHtml: true }
         };
 
         const chart = new google.visualization.PieChart(document.getElementsByClassName('chart-size')[0]);
