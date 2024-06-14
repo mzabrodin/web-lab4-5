@@ -1,4 +1,4 @@
-var pizzaCardAmount = 0;
+let pizzaCardAmount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
     const filterButtons = document.querySelectorAll(".filters-buttons button");
@@ -43,7 +43,7 @@ function changeFilter(element) {
                 if (pizza) {
                     const contentList = Object.keys(pizza["content"]);
 
-                    if (content === "all" || contentList.includes(content) || (content === "vegan" && pizza.type === "Веган піца")) {
+                    if (content === "all" || contentList.includes(content) || (content === "vegan" && pizza.type === "Вега піца")) {
                         pizzaCard.style.display = "block";
                         pizzaCardAmount++;
                     }

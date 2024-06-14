@@ -6,11 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("./scripts/data.json")
         .then((response) => response.json())
         .then((data) => {
-            let pizzas = data;
-            renderPizzas(pizzas);
+            renderPizzas(data);
 
-            // Update the total count of pizzas
-            amountMain.textContent = pizzas.length;
         })
         .catch((error) => {
             console.error("Error:", error);

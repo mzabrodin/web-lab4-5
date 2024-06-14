@@ -60,7 +60,7 @@ header {
     height: 100px;
     background-color: var(--header-color);
     color: var(--header-text-color);
-    z-index: 3;
+    z-index: 11;
     min-width: 400px;
     width: calc(100% - 350px);
     transition: background-color 0.3s ease;
